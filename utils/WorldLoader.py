@@ -11,7 +11,7 @@ class EOF:
         return "EOF"
 
 
-class GameOfLifeParser:
+class WorldLoader:
     def load(self, world_board: WorldBoard, pattern: str, initrow, initcol):
         parsed_items = []
         tokens = self.tokenize(pattern)
@@ -52,15 +52,17 @@ class GameOfLifeParser:
                 preparsed.append(False)
 
             if tokens[i] == '$':
+                if isinstance(tokens[i-1],int):
+                    preparsed.append(CRLF())
                 preparsed.append(CRLF())
 
             if tokens[i] == '!':
                 preparsed.append(EOF())
+                break
 
         matrix = []
         row = []
         for i in range(len(preparsed)):
-
             if isinstance(preparsed[i], int) and isinstance(preparsed[i + 1], bool):
                 row += preparsed[i] * [preparsed[i + 1]]
             if isinstance(preparsed[i], CRLF) or isinstance(preparsed[i], EOF):

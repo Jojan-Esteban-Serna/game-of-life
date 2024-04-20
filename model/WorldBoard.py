@@ -1,18 +1,27 @@
-class WorldBoard:
+from typing import List
+
+from observer.Observed import Observed
+from observer.Observer import Observer
+
+
+class WorldBoard(Observed):
 
     def __init__(self, num_rows, num_cols):
+        super().__init__()
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.world = [[False] * num_cols for _ in range(num_rows)]
 
     def toggle_cell(self, row, col):
         self.world[row][col] = not self.world[row][col]
+        self.notify_observers()
 
     def is_cell_alive(self, row, col):
         return self.world[row][col]
 
     def reset(self):
         self.world = [[False] * self.num_cols for _ in range(self.num_rows)]
+        self.notify_observers()
 
     def step(self):
         new_world = [[False] * self.num_cols for _ in range(self.num_rows)]
@@ -25,6 +34,7 @@ class WorldBoard:
                 new_world[row][col] = (neighbors == 2 or neighbors == 3) if self.world[row][col] else (neighbors == 3)
 
         self.world = new_world
+        self.notify_observers()
 
     def count_neighbors(self, row, col):
         relative_indexes = [-1, 0, 1]
