@@ -16,6 +16,15 @@ class WorldBoard(Observed):
         self.world[row][col] = not self.world[row][col]
         self.notify_observers()
 
+    def get_world(self):
+        return self.world
+
+    def get_num_rows(self):
+        return self.num_rows
+
+    def get_num_cols(self):
+        return self.num_cols
+
     def is_cell_alive(self, row, col):
         return self.world[row][col]
 

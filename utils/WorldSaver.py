@@ -10,7 +10,7 @@ class WorldSaver:
 
     @staticmethod
     def encode(world: WorldBoard):
-        world = world.world
+        world = world.get_world()
 
         preencoding = []
         for row in range(len(world)):

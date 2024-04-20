@@ -19,7 +19,7 @@ class WorldLoader:
 
         for row in range(initrow, initrow + len(parsed)):
             for col in range(initcol, initcol + len(parsed[row - initrow])):
-                world_board.world[row][col] = parsed[row - initrow][col - initcol]
+                world_board.get_world()[row][col] = parsed[row - initrow][col - initcol]
 
     @staticmethod
     def tokenize(stream):
