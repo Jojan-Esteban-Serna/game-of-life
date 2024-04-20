@@ -52,13 +52,17 @@ class WorldLoader:
                 preparsed.append(False)
 
             if tokens[i] == '$':
-                if isinstance(tokens[i-1],int):
-                    preparsed.append(CRLF())
+                if i > 0 and isinstance(tokens[i - 1], str):
+                    preparsed.append(1)
                 preparsed.append(CRLF())
 
             if tokens[i] == '!':
+                preparsed.append(1)
                 preparsed.append(EOF())
                 break
+        if tokens[-1] != '!':
+            preparsed.append(1)
+            preparsed.append(EOF())
 
         matrix = []
         row = []
@@ -67,6 +71,7 @@ class WorldLoader:
                 row += preparsed[i] * [preparsed[i + 1]]
             if isinstance(preparsed[i], CRLF) or isinstance(preparsed[i], EOF):
                 matrix.append(row)
+                matrix += [[]]*(preparsed[i-1]-1)
                 row = []
 
         return matrix

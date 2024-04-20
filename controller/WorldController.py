@@ -1,14 +1,11 @@
 import sys
-from tkinter import filedialog
-from typing import List
 
 import pygame
 
 from model.WorldBoard import WorldBoard
-from observer.IO import read_file
+from utils.IO import read_file, read_input
 from utils.WorldLoader import WorldLoader
 from utils.WorldSaver import WorldSaver
-from view.Button import Button
 from view.WorldView import WorldView
 
 
@@ -39,10 +36,10 @@ class WorldController:
                             elif buttom.text == "Reset":
                                 self.world_board.reset()
                             elif buttom.text == "Play":
-                                self.view.paused = not self.view.paused
+                                self.view.toggle_paused()
                                 buttom.text = "Pause"
                             elif buttom.text == "Pause":
-                                self.view.paused = not self.view.paused
+                                self.view.toggle_paused()
                                 buttom.text = "Play"
                             elif buttom.text == "Load":
                                 content = read_file()
@@ -50,6 +47,10 @@ class WorldController:
                                     self.world_loader.load(self.world_board, content, 0, 0)
                             elif buttom.text == "Save":
                                 self.world_saver.save(self.world_board,"save.rle")
+                            elif buttom.text == "Input":
+                                content = read_input("Ingrese el patron a cargar:")
+                                if content:
+                                    self.world_loader.load(self.world_board, content, 10, 10)
                             return
 
                     row = y // self.view.cell_size
@@ -58,13 +59,14 @@ class WorldController:
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    self.view.paused = not self.view.paused
+                    self.view.toggle_paused()
                     self.view.buttons[0].text = "Pause" if not self.view.paused else "Play"
 
                 elif event.key == pygame.K_UP:
-                    self.view.speed += 5
+                    self.view.increase_speed()
+
                 elif event.key == pygame.K_DOWN:
-                    self.view.speed = max(1, self.view.speed - 5)
+                    self.view.decrease_speed()
 
                 elif event.key == pygame.K_r:
                     self.world_board.reset()
@@ -73,9 +75,9 @@ class WorldController:
 
         while True:
             self.handle_events()
-            if not self.view.paused:
+            if not self.view.is_paused():
                 self.world_board.step()
-                self.view.clock.tick(self.view.speed)
+                self.view.clock.tick(self.view.get_speed())
             self.view.update()
 
 

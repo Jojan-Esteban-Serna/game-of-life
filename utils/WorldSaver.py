@@ -1,5 +1,5 @@
 from model.WorldBoard import WorldBoard
-from observer.IO import write_file
+from utils.IO import write_file
 
 
 class WorldSaver:

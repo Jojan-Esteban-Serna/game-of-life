@@ -9,6 +9,9 @@ class Button:
         self.y = y
         self.rect = None
 
+    def set_text(self, text):
+        self.text = text
+
     def draw(self, screen):
         text_rendered = self.text_font.render(self.text, True, (0, 0, 0))
         rect = text_rendered.get_rect(center=(self.x, self.y))

@@ -1,4 +1,4 @@
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 
 
 def read_file():
@@ -7,7 +7,6 @@ def read_file():
     if file_path:
         with open(file_path, "r") as file:
             content = file.read()
-            print("File content:")
     return content
 
 
@@ -17,3 +16,7 @@ def write_file(text_to_save):
     if file_path:
         with open(file_path, "w") as file:
             file.write(text_to_save)
+
+def read_input(message):
+    text_to_save = simpledialog.askstring("Ingresa", f"{message}:\t\t\t\t\t\t\t\t")
+    return text_to_save
